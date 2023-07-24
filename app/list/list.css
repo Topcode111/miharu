@@ -1,0 +1,77 @@
+/* button {
+	font-size: 60px;
+	height: 150px;
+	width: 100%;
+	margin-top:4%;
+	margin-bottom:4%;
+} */
+button.state {
+	font-weight: bold;
+	background-image: none;
+	font-size: 45px;
+}
+
+button.open {
+	border-color: seagreen;
+	background-color: lightgreen;
+}
+button.close {
+	border-color: orangered;
+	background-color: plum;
+}
+
+button.tabbtn {
+	background-image: none;
+	font-size: 45px;
+	display: inline-block;             /*インラインブロック化 */
+	border-width: 1px 1px 0px 1px;     /*下以外の枠線を引く */
+	border-style: solid;              /* 枠線の種類：実線 */
+	border-color: black;              /* 枠線の色：黒色 */
+	border-radius: 0.5em 0.75em 0 0; /* 枠線の左上角と右上角だけを丸く */
+	padding: 5px 20px;              /* 内側の余白 */
+	color: black;                     /* 文字色：黒色 */
+	background-color: orange;          /* 背景色：白色*/ 
+	font-weight: bold;                /* 太字 */
+	position: relative;               /* JavaScriptでz-indexを調整するために必要 */
+}
+
+table {
+	border: 1px solid black;
+	text-align: left;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+
+table tr th {
+	font-size: 45px;
+
+}
+
+table tr td {
+	font-size: 35px;
+}
+
+#tabcontrol{
+	display: inline;
+}
+
+/* ▼タブの中身 */
+#tabbody div {
+	border: 1px solid black; /* 枠線：黒色の実線を1pxの太さで引く */
+	margin-top: -1px;        /* 上側にあるタブと1pxだけ重ねるために「-1px」を指定 */
+	padding: 1em;            /* 内側の余白量 */
+	background-color: white; /* 背景色：白色 */
+	position: relative;      /* z-indexを調整するために必要 */
+	z-index: 0;              /* 重なり順序を「最も背面」にするため */
+ }
+
+table tr td.data {
+	text-align: right;
+	width: 25%;
+}
+
+table tr td.state {
+	text-align: center;
+	width: 25%;
+}

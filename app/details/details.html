@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>水田モニター</title>
+		<meta charset="utf-8">
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="expires" content="0" />
+		<link rel="stylesheet" type="text/css" href="../css/miharu-common.css?<?php echo TODAY?>">
+		<link rel="stylesheet" type="text/css" href="./details.css?<?php echo TODAY?>">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+		<script type="text/javascript" src="../js/selfmade.js?<?php echo TODAY?>"></script>
+		<script type="text/javascript" src="../js/miharu-data.js?<?php echo TODAY?>"></script>
+		<script type="text/javascript" src="../js/data.js?<?php echo TODAY?>"></script>
+		<script type="text/javascript" src="./details.js?<?php echo TODAY?>"></script>	
+	</head>
+	<body onload="init('<?php echo $user;?>')" onbeforeunload="chart_clear()">
+		<div name="footer">水田モニター Ver1.1</div>
+		<div id="hyname">水位自動開閉</div>
+		<!-- <div style="text-align: right;"><button onclick="btn_close()">閉じる</button></div> -->
+		<div class="btnLeft" id="field_name" style="font-size:45px;"></div>
+		<div class="btnRight">
+			<button onclick="btn_close()">閉じる</button>
+		</div>
+		<br>
+		<div style="text-align: right;font-size:30px;">周期設定：<input id="inputcycle" type="time" value="00:00"> <button onclick="cyclebtn()">周期変更</button></div>
+		<div style="text-align: right;">※周期変更は基本30分間隔です。最短で5分以上ですが、30分以内の短い時間に設定すると電池の持ちが少なくなります。</div>
+		<br>
+		<div style="text-align: right;">※電源ON時、水位センサーの初期値を得るため、水位が0cmの状態で初回1回のみ実行 <button onclick="update_volt()">水位補正</button></div>
+		<div style="font-size:45px;">
+			<select id="days" onchange="change_date(this)"></select>　期間：
+			<label><input type="radio" name="mode" value="today" onchange="change_radio(this)" checked>１日　
+			<input type="radio" name="mode" value="week" onchange="change_radio(this)">１週間</label>
+		</div>
+		<div style="background-color: white;">
+			<canvas id="chartwlevel" ></canvas>
+		</div>
+		<br>
+		<div style="background-color: white;">
+			<canvas id="chartwtemp"></canvas>
+		</div>
+		
+		<div style="margin-left:5%;margin-right:5%;">
+			<div id="tabbody"></div>
+		</div>
+		<input type="hidden" id="machine_code" value="">
+		<div id="update" name="footer"></div>
+	</body>
+</html>

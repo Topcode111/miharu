@@ -1,0 +1,120 @@
+body {
+	background-color: #b5e5ee;
+}
+
+div[name="footer"] {
+	font-size: 40px;
+	text-align: right;
+}
+
+/* ヘッダー用 */
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.fix-header {
+    padding: 15px;
+    line-height: 1.25;
+    border-top: 2px solid blue;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    background-color: lightblue;
+    text-align: right;
+}
+
+div.btnLeft{
+	text-align: left;
+	float: left;
+}
+
+div.btnCenter{
+	text-align: center;
+	float: left;
+}
+
+div.btnRight{
+	text-align: right;
+}
+
+/* 丸ボタンへの設定 */
+button, select {
+	font-size: 30px;
+	display: inline-block;
+	padding: 7px 20px;
+	border : solid 4px;
+	border-radius: 20px;
+	background-image: linear-gradient(45deg, #f8f4e6 0%, #c0c6c9 100%);
+	width: fit-content;
+}
+
+/* select選択時のstyle変更 */
+select.fix {
+/* 	color: #005243;
+	background-image: linear-gradient(45deg, #E0ECB8 0%, #0094c8 100%); */
+	color: #1e50a2;
+	background-image: linear-gradient(45deg, #a0d8ef 0%, #a0d8ef 100%);
+}
+
+.inactive {
+	color: #777777;
+	background-image: linear-gradient(45deg, #f8f4e6 0%, #c0c6c9 100%);
+}
+
+/* 緑のボタン設定 */
+button.green {
+	color: #005243;
+	background-image: linear-gradient(45deg, #E0ECB8 0%, #B7D450 100%);
+}
+
+/* 赤のボタン設定 */
+button.red {
+	color: #640125;
+	background-image: linear-gradient(45deg, #e8d3d1 0%, #e95464 100%);
+}
+
+
+
+/* 非表示にするためのクラス */
+.nodisplay{
+	display: none;
+}
+
+.hidden {
+	visibility:hidden;
+}
+
+
+/* 圃場名のstyle設定 */
+#hyname{
+	font-size: 53px;
+	/* line-height:150px; */
+}
+
+.site-header{
+	/* //background: #fff; */
+	display: flex;
+	padding: 60px 20px;
+	position: fixed;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.blink{
+	animation: flash 2s linear infinite;
+	/* width:50px;
+	height:50px;
+	background:#0091EA;
+	margin:20px; */
+  }
+  
+  @keyframes flash {
+	0%,100% {
+	  opacity: 1;
+	}
+  
+	50% {
+	  opacity: 0;
+	}
+  }
+
