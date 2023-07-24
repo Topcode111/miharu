@@ -29,7 +29,11 @@ switch ($_POST["func"]) {
         //$gwid = "d84a87fffefee348";
         echo get_latest_data($gwid);
         break;
-    case "latest2" :
+    case "latest_sort_by_id":
+        $gwid = $_SESSION['gwid'];
+        echo get_latest_data_sort_by_id($gwid);
+        break;
+    case "latest2":
         //$uid = $_COOKIE["userID"];
         $gwid = $_POST['gwid'];
         //$gwid = "d84a87fffefee348";
@@ -244,7 +248,8 @@ switch ($_POST["func"]) {
 
 }
 
-function get_hist_a($uid, $id, $period) {
+function get_hist_a($uid, $id, $period)
+{
     $days = explode(",", $period);
     $date1 = $days[0];
     $date2 = $days[1];
@@ -358,8 +363,9 @@ function get_latest_data($gwid) {
 
     //ゲート内子機の最新アップリンクデータ一時刻覧
     //$updatalist = dbmgr::readdbgwslaveuplastlink($gwid);
-     //ゲート内子機情報取得
-     $slavelist = dbmgr::readdbgwslave($gwid);
+    //ゲート内子機情報取得
+    $slavelist = dbmgr::readdbgwslave($gwid);
+    // $slavelist = dbmgr::readdbgwslaveSortbyId($gwid);
     if (count($slavelist) !== 0) {
         $arraylist = array_column($slavelist, 'SLAVE_ID');
         for($i = 0; $i < count($arraylist); $i++) {
@@ -374,7 +380,53 @@ function get_latest_data($gwid) {
     return join("\n", $array);
 }
 
-function set_limit($uid, $id, $data) {
+//並び換え等が必要かも
+//db化済
+// SacredDevKing
+function get_latest_data_sort_by_id($gwid)
+{
+    $array = array();
+
+    //ゲート内子機の最新アップリンクデータ一時刻覧
+    //$updatalist = dbmgr::readdbgwslaveuplastlink($gwid);
+    //ゲート内子機情報取得
+     $slavelist = dbmgr::readdbgwslave($gwid);
+    // $slavelist = dbmgr::readdbgwslaveSortbyId($gwid);
+    if (count($slavelist) !== 0) {
+        $arraylist = array_column($slavelist, 'SLAVE_ID');
+        for ($i = 0; $i < count($arraylist); $i++) {
+            $id = $slavelist[$i]['SLAVE_ID'];
+            //$lasttaime= $updatalist[$i][max(SLAVEU_DATE)] ; 
+            //GW内子機IDと最新アップリンク時刻よりアップリンクリスト取得
+
+            // Get mode
+            $uplinklist = dbmgr::readlastuplinkdatalist3($id);
+            $mode = getmode($id);
+
+            // Get limit
+            $uid = $_SESSION['userid'];
+            $limit =  get_limit($uid, $id);
+
+            // Get name
+            $name =  get_name($id);
+
+            $result = array(
+                "latest_data" => implode(",", $uplinklist[0]),
+                "mode" => $mode,
+                "limit" => $limit,
+                "name" => $name
+            );
+            // $array[] = implode(",", $uplinklist[0]);
+
+            $array[] = json_encode($result);
+
+        }
+    }
+    return join("\n", $array);
+}
+
+function set_limit($uid, $id, $data)
+{
     //すぐに命令を出しているのをデータベースにセットするだけに変更
     $dataarry = explode(",", $data);
     $pr =     $dataarry[0];
@@ -385,8 +437,12 @@ function set_limit($uid, $id, $data) {
     $time =   $dataarry[4];
     //開閉　0：閉める、1:開ける
     $ctrl =   $dataarry[5];
-    $period = $dataarry[6];
-    $span =  $dataarry[7];
+
+    // ======= TODO - COMMENTED BY SACREDDEVKING - BEGIN =======
+    // This is error.
+    // $period = $dataarry[6];
+    // $span =  $dataarry[7];
+    // ======= TODO - COMMENTED BY SACREDDEVKING - END =======
 
     $lastset = dbmgr::readdbslavesetlog($id);
     if (! empty($lastset)) {

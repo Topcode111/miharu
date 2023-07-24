@@ -18,8 +18,10 @@ class dbmgr {
     //$dbpassword2 = getenv('WSDBPass');
     // $dbpassword2 = 'Itec1025';
 
-    $dbuser2 = 'phpmyadmin';
-    $dbpassword2 = '47184719Itech@ad';
+    // $dbuser2 = 'phpmyadmin';
+    // $dbpassword2 = '47184719Itech@ad';
+    $dbuser2 = 'root';
+    $dbpassword2 = '';
     
     $dbh = new PDO($dsn2, $dbuser2, $dbpassword2, array(
       PDO::ATTR_EMULATE_PREPARES => false,
@@ -581,6 +583,26 @@ class dbmgr {
 //  }
 
   //ゲート内子機情報取得
+  public static function readdbgwslaveSortbyId($gwid) {
+    $dbh = self::dbPDO();
+      try {
+        $sth = $dbh->prepare('
+        SELECT * FROM slave  
+        WHERE SLAVE_GW_ID = ? AND SLAVE_TYPE_CONTINUE="0"
+        ORDER BY SLAVE_ID 
+        ;');
+        $sth->bindValue(1, $gwid, PDO::PARAM_STR);
+        //$sth->bindValue(2, $loginname, PDO::PARAM_STR);
+        // 実行
+        $sth->execute();
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+      } catch (Exception $e) {
+        error_output($e->getMessage());
+        throw $e;
+    }
+    return $result;
+  }
+
   public static function readdbgwslave($gwid) {
     $dbh = self::dbPDO();
       try {

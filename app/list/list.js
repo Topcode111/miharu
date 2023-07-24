@@ -5,7 +5,7 @@ function init997(uuidd) {
 		//window.close();
 		//return;
 	}
-	initTable();
+	initTable(0);
 
 	//document.getElementById("groupname0").innerHTML = get_group_name();
  }
@@ -27,16 +27,16 @@ function update() {
 		return;
 	}
 
-	initTable();
+	initTable(0);
 	if (page_index != "") {
 		tabChange(page_index);
 	}
 	alert("画面を更新しました。");
 }
 
-function initTable() {
+function initTable(curTabIdx) {
 
-	let lastlog = get_latest_data();
+	let lastlog = get_latest_data_sort_by_id();
 	if (lastlog.length == 0) {
 		return;
 	} 
@@ -53,7 +53,10 @@ function initTable() {
 		let statenow = "異常";
 		let btnstr = "無効";
 		let orderstr = "なし";
-		let gmode = get_mode(id);
+
+		// let gmode = get_mode(id);
+		let gmode = val.mode;
+
 		if (gmode != "") {
 			Uplink = gmode.split(",");
 
@@ -71,7 +74,10 @@ function initTable() {
 			}
 	    }
 		let blink = "";
-		let ordera = get_limit(id);
+
+		// let ordera = get_limit(id);
+		let ordera = val.limit;
+
 		if (ordera != "") {
 			let order  =  ordera.split(",");
 
@@ -101,7 +107,7 @@ function initTable() {
 		if (satime<3){tabCr="#b8bcff"}else{tabCr= "#C0C0C0"};
 
 		let item = `
-		<tr><th colspan="7" bgcolor=${tabCr}>${get_name(id)}</th></tr>
+		<tr><th colspan="7" bgcolor=${tabCr}>${val.name}</th></tr>
 		<tr bgcolor=${tabCr} id="taget${id}" onclick="opendetail('${id}')"> 
 			<th height="100" align="left">${No}</th>
 			<th align="center" colspan="3">${val.getDateMMDD()} ${val.getTimeHHMM()}</th>
@@ -139,8 +145,8 @@ function initTable() {
 	let page = '';
 	for (let i = 0; i < disp.length; i++) {
 		if (tabcount === 0) {
-			if (tabindex === 0) {
-				tabbtn.push(`<button class="tabbtn" id="tabpage${tabindex}" style="background-color:orange;" onclick="tabChange('tabpage${tabindex}')">${(i+1)}～</button>`);
+			if (tabindex === curTabIdx) {
+				tabbtn.push(`<button class="tabbtn" id="tabpage${tabindex}" style="background-color:orange;" onclick="tabChange('tabpage${tabindex}')">${(i + 1)}～</button>`);
 				page += `<div id="tabpage${tabindex}"><table>`;
 			} else {
 				tabbtn.push(`<button class="tabbtn" id="tabpage${tabindex}" style="background-color:white;" onclick="tabChange('tabpage${tabindex}')">${(i+1)}～</button>`);
@@ -173,7 +179,8 @@ function initTable() {
 	let clist = new Array();
 	lastlog.forEach(elem => {
 		let id = elem.id;
-		let limit_raw = get_limit(id);
+		// let limit_raw = get_limit(id);
+		let limit_raw = elem.limit;
 		let alartflag = "";
 		if (limit_raw != "") {
 			let limit_items = limit_raw.split(",");
@@ -462,6 +469,10 @@ function statebtn(obj) {
 		ctrl1 = 0;
 	}
 
+	// Get current tab index.
+	let tabId = document.querySelector(`#btn${obj.value}`).parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("id");
+	let tabIdx = parseInt(tabId.slice(7, 8));
+
 	data1 = 3 + "," + "," + "," + "," + "," + ctrl1;
 	//data1=$pr , $offon , $up , $down , $time , $ctrl
     let res = set_limit( obj.value, data1);
@@ -470,8 +481,8 @@ function statebtn(obj) {
             alert("正常に受け付けました。");
 			document.getElementById(`now${obj.value}`).innerHTML = now;
 			document.getElementById(`btn${obj.value}`).innerHTML = btn;
-            initTable();
-            break;
+			initTable(tabIdx);
+			break;
 
         case "04":
             alert("制御実行待機中です。");

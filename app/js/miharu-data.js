@@ -39,8 +39,15 @@ var Data = function (str) {
     //11 前回水位電圧
     //12 機器状態
 
-    let items = str.split(",");
-  
+    let obj = JSON.parse(str);
+    let latestData = obj['latest_data'];
+    let mode = obj['mode'];
+    let limit = obj['limit'];
+    let name = obj['name'];
+
+    // let items = str.split(",");
+    let items = latestData.split(",");
+
     // 00子機ID
     this.id = items[0];
     // 01GW_ID
@@ -68,6 +75,12 @@ var Data = function (str) {
     this.wvolt = items[10];
     // 12前回水位電圧
     this.pwvolt = items[11];
+    // 13
+    this.mode = mode;
+    // 14
+    this.limit = limit;
+    // 15
+    this.name = name;
 
     let info = items[12];
     this.voltstate = info.slice(info.length - 2, info.length - 1);

@@ -58,6 +58,11 @@ function send_volt(id, volt) {
 	return transaction(array) != "";
 }
 
+function get_latest_data_sort_by_id() {
+	let array = { func: "latest_sort_by_id" };
+	return create_data(transaction(array));
+}
+
 function get_latest_data() {
 	let array = { func: "latest" };
 	return create_data(transaction(array));

@@ -23,7 +23,7 @@ function init996(uuidd) {
 	document.getElementById(`date2`).max = now;
 	allflag=0;
 
-	initTable();
+	initTable(0);
 }
 
 function update() {
@@ -35,7 +35,7 @@ function update() {
 		return;
 	}
 
-	initTable();
+	initTable(0);
 	alert("画面を更新しました。");
 }
 

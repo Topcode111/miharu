@@ -9,7 +9,7 @@ function init994(uuidd) {
 	//document.getElementById("groupname0").innerHTML = get_group_name();
  }
 function update() {
-	initTable();
+	initTable(0);
 	if (page_index != "") {
 		tabChange(page_index);
 	}
