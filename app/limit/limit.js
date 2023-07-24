@@ -1,50 +1,50 @@
 
 function init996(uuidd) {
-	if ((uuidd ==  0 || uuidd =="")) {
+	if ((uuidd == 0 || uuidd == "")) {
 		alert("ログインしなおしてください。");
 		location.href = "../logout.php";
 		return;
 	}
 
 	let ret = check_login();
-	if (ret ==  0 || ret =="") {
+	if (ret == 0 || ret == "") {
 		alert("ログイン情報が古くなっています\nログインしなおしてください。");
 		location.href = "../logout.php";
 		return;
 	}
 
 	let date = new Date();
-	let now = `${date.getFullYear()}-${padding_num('00', date.getMonth()+1)}-${padding_num('00', date.getDate())}`;
+	let now = `${date.getFullYear()}-${padding_num('00', date.getMonth() + 1)}-${padding_num('00', date.getDate())}`;
 
 	document.getElementById(`date1`).value = now;
 	document.getElementById(`date2`).value = now;
 
 	document.getElementById(`date1`).max = now;
 	document.getElementById(`date2`).max = now;
-	allflag=0;
+	allflag = 0;
 
-	initTable(0);
+	initTable();
 }
 
 function update() {
 
 	let ret = check_login();
-	if (ret ==  0 || ret =="") {
+	if (ret == 0 || ret == "") {
 		alert("ログイン情報が古くなっています\nログインしなおしてください。");
 		location.href = "../logout.php";
 		return;
 	}
 
-	initTable(0);
+	initTable();
 	alert("画面を更新しました。");
 }
 
 function button_topmenu(userpermid) {
 	let path = "../top.php";
 	screen_transition(path);
-	if (userpermid == 2 ||userpermid == 3 ){
+	if (userpermid == 2 || userpermid == 3) {
 		// 子機一覧を表示
-		screen_transition( '../top.php');
+		screen_transition('../top.php');
 		return;
 	} else {
 		//ゲート一覧を表示
@@ -57,7 +57,6 @@ function button_topmenu(userpermid) {
 
 
 function initTable() {
-
 	let batch = get_batch();
 	if (batch != "") {
 		let batch_item = batch.split(",");
@@ -85,11 +84,11 @@ function initTable() {
 			document.getElementById(`swbulk5`).checked = "";
 		}
 
-		document.getElementById("upbulk5").value =  batch_item[3];
+		document.getElementById("upbulk5").value = batch_item[3];
 		document.getElementById("lowbulk5").value = batch_item[4];
-		document.getElementById("date5").value =    batch_item[5].slice(0, 10);
-		document.getElementById("date55").value =   batch_item[7].slice(0, 10);
-		document.getElementById("time55").value =   batch_item[7].slice(-8);
+		document.getElementById("date5").value = batch_item[5].slice(0, 10);
+		document.getElementById("date55").value = batch_item[7].slice(0, 10);
+		document.getElementById("time55").value = batch_item[7].slice(-8);
 
 		if (batch_item[6] == "1") {
 			document.getElementById(`swbulk55`).checked = "checked";
@@ -109,7 +108,10 @@ function initTable() {
 		document.getElementById("bSpan").value = batch_item[12];
 	}
 
-	let lastlog = get_latest_data();
+	// ======= COMMENTED BY SACREDDEVKING - BEGIN =======
+	// let lastlog = get_latest_data();		
+	// ======= COMMENTED BY SACREDDEVKING - BEGIN =======
+	let lastlog = get_latest_data_sort_by_id();
 	if (lastlog.length == 0) {
 		return;
 	}
@@ -119,15 +121,18 @@ function initTable() {
 	});
 
 	let date = new Date();
-	let now = `${date.getFullYear()}-${padding_num('00', date.getMonth()+1)}-${padding_num('00', date.getDate())}`;
+	let now = `${date.getFullYear()}-${padding_num('00', date.getMonth() + 1)}-${padding_num('00', date.getDate())}`;
 	let disp = smap.map(val => {
 		let id = val.id;
 
-		let limit_raw = get_limit(id);
+		// ======= COMMENTED BY SACREDDEVKING - BEGIN =======
+		// let limit_raw = get_limit(id);
+		// ======= COMMENTED BY SACREDDEVKING - END =======
+		let limit_raw = val.limit;
 
 		let available1 = "";
 		let upvalue = "";
-		let lowvalue = "";	
+		let lowvalue = "";
 		let deadline = "";
 		let datevalue = "";
 		let timevalue = "";
@@ -142,12 +147,12 @@ function initTable() {
 
 			//個別水位
 			if (limit_items[14] == "1") {
-				available1="checked";
+				available1 = "checked";
 			} else {
-				available1="";
+				available1 = "";
 			}
-		
-            //available1 = "checked";
+
+			//available1 = "checked";
 			upvalue = limit_items[15];
 			lowvalue = limit_items[16];
 			deadline = limit_items[17].slice(0, 10);
@@ -181,13 +186,13 @@ function initTable() {
 			} else {
 				span = 0;
 			}
-			
+
 
 		}
 
 		let item = `
 		<tr style="width: 100%;">
-			<th align="left" colspan="6" style="width: 100%;">子機名：${get_name(id)}</th>
+			<th align="left" colspan="6" style="width: 100%;">子機名：${val.name}</th>
 		</tr>
 		<tr>
 			<tr style="width: 100%;">
@@ -246,7 +251,7 @@ function initTable() {
 function limit_save(userpermid) {
 
 	let ret = check_login();
-	if (ret ==  0 || ret =="") {
+	if (ret == 0 || ret == "") {
 		alert("ログイン情報が古くなっています\nログインしなおしてください。");
 		location.href = "../logout.php";
 		return;
@@ -258,9 +263,9 @@ function limit_save(userpermid) {
 		return;
 	}
 
-	if(allflag == 1) {
+	if (allflag == 1) {
 		let pcheck = exists_parmission();
-		if(pcheck != 0) {
+		if (pcheck != 0) {
 			alert("管理者に制限されている子機があるため一括設定できません。");
 			return;
 		}
@@ -372,12 +377,15 @@ function limit_save(userpermid) {
 	set_batch(batchlist.join(","));
 
 	// グループ内子機の最新データ
-	let lastlog = get_latest_data();
+	// ============= COMMENTED BY SACREDDEVKING - BEGIN =================
+	// let lastlog = get_latest_data();
+	let lastlog = get_latest_data_sort_by_id();
+	// ============= COMMENTED BY SACREDDEVKING - END =================
 	if (lastlog.length == 0) {
 		return;
 	}
 
-	if(allflag == 1) {
+	if (allflag == 1) {
 
 		//上限下限設定
 		lastlog.forEach(elem => {
@@ -419,14 +427,20 @@ function limit_save(userpermid) {
 
 				let datestr = document.getElementById(`date${elem.id}`).value;
 				if (!datestr) {
-					alert(`${get_name(elem.id)}の水位の期限が入力されていません。`);
+					// ================= COMMENTED BY SACREDDEVKING - BEGIN =================
+					// alert(`${get_name(elem.id)}の水位の期限が入力されていません。`);
+					// ================= COMMENTED BY SACREDDEVKING - END =================
+					alert(`${elem.name}の水位の期限が入力されていません。`);
 					return;
 				}
 
 				let date = new Date(datestr);
 
 				if (today.getTime() > date.getTime()) {
-					alert(`${get_name(elem.id)}の水位の期限が過ぎています。`);
+					// ================= COMMENTED BY SACREDDEVKING - BEGIN =================
+					// alert(`${get_name(elem.id)}の水位の期限が過ぎています。`);
+					// ================= COMMENTED BY SACREDDEVKING - END =================
+					alert(`${elem.name}の水位の期限が過ぎています。`);
 					return;
 				}
 			}
@@ -438,20 +452,29 @@ function limit_save(userpermid) {
 				let datetime = document.getElementById(`time4${elem.id}`).value;
 
 				if (datedate == "" || datetime == "") {
-					alert(`${get_name(elem.id)}の日時が指定されていません。`);
+					// ================= COMMENTED BY SACREDDEVKING - BEGIN =================
+					// alert(`${get_name(elem.id)}の日時が指定されていません。`);
+					// ================= COMMENTED BY SACREDDEVKING - END =================
+					alert(`${elem.name}の日時が指定されていません。`);
 					return;
 				}
 
 				let tempdate = new Date(`${datedate} ${datetime}`);
 				let now = new Date();
 				if (now.getTime() > tempdate.getTime()) {
-					alert(`${get_name(elem.id)}の日時が過ぎています。`);
+					// ================= COMMENTED BY SACREDDEVKING - BEGIN =================
+					// alert(`${get_name(elem.id)}の日時が過ぎています。`);
+					// ================= COMMENTED BY SACREDDEVKING - END =================
+					alert(`${elem.name}の日時が過ぎています。`);
 					return;
 				}
 
 				let period = document.getElementById(`period${elem.id}`).value;
 				if (period == "") {
-					alert(`${get_name(elem.id)}の開閉時間が入力されていません。`);
+					// ================= COMMENTED BY SACREDDEVKING - BEGIN =================
+					// alert(`${get_name(elem.id)}の開閉時間が入力されていません。`);
+					// ================= COMMENTED BY SACREDDEVKING - END =================
+					alert(`${elem.name}の開閉時間が入力されていません。`);
 					return;
 				}
 			}
@@ -494,15 +517,15 @@ function limit_save(userpermid) {
 				if (!period) {
 					period = "0";
 				}
-	
+
 				let active = document.getElementById(`swbulk${elem.id}`).checked;
 				let datestr = document.getElementById(`date4${elem.id}`).value;
 				let timestr = document.getElementById(`time4${elem.id}`).value;
-			
+
 				let daytime = datestr + " " + timestr;
-	
+
 				let span = document.getElementById(`span${elem.id}`).value;
-	
+
 				let array = new Array();
 				array.push(5);
 				array.push(active ? "1" : "0"); //on/offtrueを1にfalseを0に変更
@@ -512,7 +535,7 @@ function limit_save(userpermid) {
 				array.push(document.getElementById(`state${elem.id}`).value); // 開閉
 				array.push(period); // 開閉期間
 				array.push(span); // 期間
-	
+
 				//data=$pr , $offon , $up , $down , $time , $ctrl
 				console.log(array);
 				set_limit(elem.id, array.join(","));
@@ -526,8 +549,12 @@ function limit_save(userpermid) {
 }
 
 function dl_hist() {
-	let lastlog = get_latest_data();
-	if (lastlog.length == 0){
+	// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+	// let lastlog = get_latest_data();
+	// ====================== COMMENTED BY SACREDDEVKING - END ===================
+	let lastlog = get_latest_data_sort_by_id();
+
+	if (lastlog.length == 0) {
 		return;
 	}
 	let smap = lastlog.sort((a, b) => {
@@ -544,7 +571,10 @@ function dl_hist() {
 		let id = elem.id;
 		let raw = get_hist_a(id, span).trim();
 		if (raw != "") {
-			let childname = get_name(id);
+			// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+			// let childname = get_name(id);
+			// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+			let childname = elem.name;
 			let rows = raw.split("\n");
 
 			rows.forEach(row => {

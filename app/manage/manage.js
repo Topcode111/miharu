@@ -19,7 +19,10 @@ function update() {
 }
 
 function init_chaildselect() {
-	let lastlog = get_latest_data();
+	// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+	// let lastlog = get_latest_data();
+	// ====================== COMMENTED BY SACREDDEVKING - END ===================
+	let lastlog = get_latest_data_sort_by_id();
 	if (lastlog.length == 0){
 		return;
 	}
@@ -27,7 +30,10 @@ function init_chaildselect() {
 	let html = "";
 	lastlog.forEach(elem => {
 		let id = elem.id;
-		let childname = get_name(id);
+		// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+		// let childname = get_name(id);
+		// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+		let childname = elem.name;
 		html += `<option value="${id}">${childname}</option>`;
 	});
 	document.getElementById("chaild").innerHTML = html;
@@ -52,7 +58,10 @@ function page_back(userpermid) {
 }
 
 function all_sycle() {
-	let lastlog = get_latest_data();
+	// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+	// let lastlog = get_latest_data();
+	// ====================== COMMENTED BY SACREDDEVKING - END ===================
+	let lastlog = get_latest_data_sort_by_id();
 	if (lastlog.length == 0){
 		return;
 	}
@@ -126,7 +135,10 @@ function one_sycle(pr) {
 }
 
 function all_state() {
-	let lastlog = get_latest_data();
+	// ====================== COMMENTED BY SACREDDEVKING - BEGIN ===================
+	// let lastlog = get_latest_data();
+	// ====================== COMMENTED BY SACREDDEVKING - END ===================
+	let lastlog = get_latest_data_sort_by_id();
 	if (lastlog.length == 0){
 		return;
 	}

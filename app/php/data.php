@@ -440,8 +440,8 @@ function set_limit($uid, $id, $data)
 
     // ======= TODO - COMMENTED BY SACREDDEVKING - BEGIN =======
     // This is error.
-    // $period = $dataarry[6];
-    // $span =  $dataarry[7];
+    $period = (isset($dataarry[6]) && $dataarry[6] != '') ? $dataarry[6] : 0;
+    $span =  (isset($dataarry[7]) && $dataarry[7] != '') ? $dataarry[7] : 0;
     // ======= TODO - COMMENTED BY SACREDDEVKING - END =======
 
     $lastset = dbmgr::readdbslavesetlog($id);

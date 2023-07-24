@@ -90,7 +90,11 @@ function initTable(curTabIdx) {
 					orderstr = "閉";
 					btnstr = "開ける";
 				}
-			} else {
+			} else if (order[14] == 1) {
+				// Auto Control
+				blink = `class="blink"`;
+				// TODO - Show the correct status. But I can't see what it is here.
+			}  else {
 				blink = "";
 			}
 		}
