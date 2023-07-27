@@ -52,7 +52,12 @@
 		//$listlast=dbmgr::readdbgroupslaveuplastlink('001');
 		//echo ($listlast);
 		//$_GET['gwlistno']=1;
+
+		// =========== COMMENTED BY SACREDDEVKING - BEGIN ============
 		$gwlistno = $_GET['gwlistno'];
+		// $gwlistno = isset($_GET['gwlistno']) ? $_GET['gwlistno'] : 1;
+		// =========== COMMENTED BY SACREDDEVKING - END ============
+		
 		//gwlistno=0は管理者付き農家または一般農家
 		//gwlistno>0は管理者で数はグループ内ゲート番号
 		//$_SESSION['usergroupid']="001";

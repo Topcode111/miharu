@@ -475,7 +475,7 @@ function statebtn(obj) {
 
 	// Get current tab index.
 	let tabId = document.querySelector(`#btn${obj.value}`).parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("id");
-	let tabIdx = parseInt(tabId.slice(7, 8));
+	let tabIdx = parseInt(tabId.replace("tabpage", ""));
 
 	data1 = 3 + "," + "," + "," + "," + "," + ctrl1;
 	//data1=$pr , $offon , $up , $down , $time , $ctrl
