@@ -604,7 +604,7 @@ class dbmgr {
                     GROUP BY SLAVEU_ID
                 )
             ) su ON s.SLAVE_ID = su.SLAVEU_ID
-          LEFT JOIN slavestandardvlog v ON su.SLAVEU_ID = v.SLAVE_SET_ID
+          LEFT JOIN slavestandardvlog v ON  su.SLAVEU_ID = v.SLAVE_SET_ID
           WHERE SLAVE_GW_ID = ? AND SLAVE_TYPE_CONTINUE="0"
           ORDER BY SLAVE_NUMBER 
         ;');
