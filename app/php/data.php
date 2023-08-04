@@ -377,6 +377,7 @@ function get_latest_data($gwid) {
 
         }
     }
+
     return join("\n", $array);
 }
 
@@ -386,22 +387,21 @@ function get_latest_data($gwid) {
 function get_latest_data_sort_by_id($gwid)
 {
     $array = array();
-
+    
     //ゲート内子機の最新アップリンクデータ一時刻覧
     //$updatalist = dbmgr::readdbgwslaveuplastlink($gwid);
     //ゲート内子機情報取得
-     $slavelist = dbmgr::readdbgwslave($gwid);
-    // $slavelist = dbmgr::readdbgwslaveSortbyId($gwid);
+    $slavelist = dbmgr::readdbgwslaveSortbyId($gwid);
+
     if (count($slavelist) !== 0) {
-        $arraylist = array_column($slavelist, 'SLAVE_ID');
-        for ($i = 0; $i < count($arraylist); $i++) {
+        for ($i = 0; $i < count($slavelist); $i++) {
             $id = $slavelist[$i]['SLAVE_ID'];
-            //$lasttaime= $updatalist[$i][max(SLAVEU_DATE)] ; 
-            //GW内子機IDと最新アップリンク時刻よりアップリンクリスト取得
+
+            $updatelink = array_slice($slavelist[$i], 0, 13);
 
             // Get mode
-            $uplinklist = dbmgr::readlastuplinkdatalist3($id);
-            $mode = getmode($id);
+            $modeArr = array_slice($slavelist[$i], 13);
+            $mode = implode(",", $modeArr);
 
             // Get limit
             $uid = $_SESSION['userid'];
@@ -411,17 +411,16 @@ function get_latest_data_sort_by_id($gwid)
             $name =  get_name($id);
 
             $result = array(
-                "latest_data" => implode(",", $uplinklist[0]),
+                "latest_data" => implode(",", $updatelink),
                 "mode" => $mode,
                 "limit" => $limit,
                 "name" => $name
             );
-            // $array[] = implode(",", $uplinklist[0]);
 
             $array[] = json_encode($result);
-
         }
     }
+
     return join("\n", $array);
 }
 

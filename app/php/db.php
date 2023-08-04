@@ -587,9 +587,26 @@ class dbmgr {
     $dbh = self::dbPDO();
       try {
         $sth = $dbh->prepare('
-        SELECT * FROM slave  
-        WHERE SLAVE_GW_ID = ? AND SLAVE_TYPE_CONTINUE="0"
-        ORDER BY SLAVE_ID 
+        SELECT s.SLAVE_ID, s.SLAVE_GW_ID, s.SLAVE_NUMBER, su.SLAVEU_DATE, 
+          su.SLAVEU_BAT, su.SLAVEU_SUIIDATA, su.SLAVEU_TEMPDATA, su.SLAVEU_OPCLSTATE, 
+            SLAVE_SET_STADARD, su.SLAVEU_LASTSUIIDATA, su.SLAVEU_SUIIDATAV, su.SLAVEU_SUIIDATALV,
+          su.SLAVEU_STATE ,
+          su.SLAVEU_ID as SLAVEU_C_ID, su.SLAVEU_DATE as SLAVEU_C_DATE, su.SLAVEU_SET as SLAVEU_C_SET, su.SLAVEU_STATE as SLAVEU_C_STATE, su.SLAVEU_BAT as SLAVEU_C_BAT, su.SLAVEU_RSSI as SLAVEU_C_RSSI, 
+          su.SLAVEU_SNR as SLAVEU_C_SNR, su.SLAVEU_SUIIDATA as SLAVEU_C_SUIIDATA, su.SLAVEU_TEMPDATA as SLAVEU_C_TEMPDATA, su.SLAVEU_LASTDATE as SLAVEU_C_LASTDATE, su.SLAVEU_LASTSUIIDATA as SLAVEU_C_LASTSUIIDATA,
+          su.SLAVEU_LASTTEMPDATA as SLAVEU_C_LASTTEMPDATA, su.SLAVEU_CONTDATE as SLAVEU_C_CONTDATE, su.SLAVEU_OPCLSTATE as SLAVEU_C_OPCLSTATE, su.SLAVEU_SUIIDATAV as SLAVEU_C_SUIIDATAV,  su.SLAVEU_SUIIDATALV as SLAVEU_C_SUIIDATALV
+          FROM slave s
+            LEFT JOIN (
+                SELECT *
+                FROM slaveupdata
+                WHERE (SLAVEU_ID, SLAVEU_DATE) IN (
+                    SELECT SLAVEU_ID, MAX(SLAVEU_DATE)
+                    FROM slaveupdata
+                    GROUP BY SLAVEU_ID
+                )
+            ) su ON s.SLAVE_ID = su.SLAVEU_ID
+          LEFT JOIN slavestandardvlog v ON su.SLAVEU_ID = v.SLAVE_SET_ID
+          WHERE SLAVE_GW_ID = ? AND SLAVE_TYPE_CONTINUE="0"
+          ORDER BY SLAVE_NUMBER 
         ;');
         $sth->bindValue(1, $gwid, PDO::PARAM_STR);
         //$sth->bindValue(2, $loginname, PDO::PARAM_STR);
@@ -599,6 +616,37 @@ class dbmgr {
       } catch (Exception $e) {
         error_output($e->getMessage());
         throw $e;
+    }
+    return $result;
+  }
+
+  /**
+   * @author SacredDevKing
+   * @return result Return the slateupdate results
+   */
+  public static function readlastuplinkdatalist3all($gwid) {
+    $dbh = self::dbPDO();
+    try {
+      $sth = $dbh->prepare('
+      SELECT SLAVE_ID,SLAVE_GW_ID,SLAVE_NUMBER,SLAVEU_DATE,
+             SLAVEU_BAT,SLAVEU_SUIIDATA,SLAVEU_TEMPDATA,SLAVEU_OPCLSTATE,
+             SLAVE_SET_STADARD,SLAVEU_LASTSUIIDATA,SLAVEU_SUIIDATAV,SLAVEU_SUIIDATALV,
+             SLAVEU_STATE
+      FROM slave left outer join slaveupdata 
+      ON slave.SLAVE_ID = slaveupdata.SLAVEU_ID 
+      left outer join slavestandardvlog ON 
+      slaveupdata.SLAVEU_ID =  slavestandardvlog.SLAVE_SET_ID
+      WHERE SLAVE_GW_ID = ? ORDER BY SLAVEU_DATE DESC limit 1
+      ;');
+  
+      $sth->bindValue(1, $gwid, PDO::PARAM_STR);
+      //$sth->bindValue(2, $lasttaime, PDO::PARAM_STR);
+      // 実行
+      $sth->execute();
+      $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      error_output("readlastuplinkdatalist3".$e->getMessage());
+      throw $e;
     }
     return $result;
   }
@@ -962,7 +1010,7 @@ class dbmgr {
       WHERE GROUP_IN_GROUP = ? AND GROUP_TYPE_CONTINUE= "0"
       ORDER BY GROUP_NO
       ;');
-    
+
       $sth->bindValue(1, $usergroupid, PDO::PARAM_STR);
       //$sth->bindValue(2, $lasttaime, PDO::PARAM_STR);
       // 実行
@@ -1117,7 +1165,7 @@ class dbmgr {
       WHERE SLAVE_PI_ID = ?
       ORDER BY SLAVE_PI_AT DESC limit 1
       ;');
-    
+
       $sth->bindValue(1, $id, PDO::PARAM_STR);
       // 実行
       $sth->execute();

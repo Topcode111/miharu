@@ -54,8 +54,8 @@
 		//$_GET['gwlistno']=1;
 
 		// =========== COMMENTED BY SACREDDEVKING - BEGIN ============
-		$gwlistno = $_GET['gwlistno'];
-		// $gwlistno = isset($_GET['gwlistno']) ? $_GET['gwlistno'] : 1;
+		// $gwlistno = $_GET['gwlistno'];
+		$gwlistno = isset($_GET['gwlistno']) ? $_GET['gwlistno'] : 1;
 		// =========== COMMENTED BY SACREDDEVKING - END ============
 		
 		//gwlistno=0は管理者付き農家または一般農家

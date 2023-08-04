@@ -7,13 +7,13 @@ $dbdsn = 'mysql:dbname=hydrant;host=localhost;charset=utf8';
 // $dbdsn = 'mysql:dbname=wsdb_20191228_test;host=localhost;charset=utf8';
 
 // ===== COMMENTED BY SACREDDEVKING - BEGIN ======
-// $dbuser = 'phpmyadmin';
-// // $dbpassword = getenv('WSDBPass');
-// $dbpassword = '47184719Itech@ad';
-// ===== COMMENTED BY SACREDDEVKING - END ======
+$dbuser = 'phpmyadmin';
+// $dbpassword = getenv('WSDBPass');
+$dbpassword = '47184719Itech@ad';
 
-$dbuser = "root";
-$dbpassword = "";
+// $dbuser = "root";
+// $dbpassword = "";
+// ===== COMMENTED BY SACREDDEVKING - END ======
 
 // ユーザのログイン用情報を読込して返す
 function readUsersLoginInfo($loginname, $loginpass) {
@@ -150,7 +150,7 @@ if (isset($_POST['usercd']) && isset($_POST['password'])) {
         $usergroupid = $row['USER_GROUP_ID'];
        
         // 復号したパスワードを照合
-        // if (hash("sha256",$_POST['password']) === $decodedpass) {
+        if (hash("sha256",$_POST['password']) === $decodedpass) {
 
           if ($permid > 0 	&& $permid < 4) {
             // 認証に成功した場合、セッションの情報を代入する
@@ -174,7 +174,7 @@ if (isset($_POST['usercd']) && isset($_POST['password'])) {
           } else {
             $errormes = '対象ユーザーに権限が割当されていません。';
           }
-        // }
+        }
       }
     }
   }
