@@ -594,19 +594,19 @@ class dbmgr {
           su.SLAVEU_ID as SLAVEU_C_ID, su.SLAVEU_DATE as SLAVEU_C_DATE, su.SLAVEU_SET as SLAVEU_C_SET, su.SLAVEU_STATE as SLAVEU_C_STATE, su.SLAVEU_BAT as SLAVEU_C_BAT, su.SLAVEU_RSSI as SLAVEU_C_RSSI, 
           su.SLAVEU_SNR as SLAVEU_C_SNR, su.SLAVEU_SUIIDATA as SLAVEU_C_SUIIDATA, su.SLAVEU_TEMPDATA as SLAVEU_C_TEMPDATA, su.SLAVEU_LASTDATE as SLAVEU_C_LASTDATE, su.SLAVEU_LASTSUIIDATA as SLAVEU_C_LASTSUIIDATA,
           su.SLAVEU_LASTTEMPDATA as SLAVEU_C_LASTTEMPDATA, su.SLAVEU_CONTDATE as SLAVEU_C_CONTDATE, su.SLAVEU_OPCLSTATE as SLAVEU_C_OPCLSTATE, su.SLAVEU_SUIIDATAV as SLAVEU_C_SUIIDATAV,  su.SLAVEU_SUIIDATALV as SLAVEU_C_SUIIDATALV
-          FROM slave s
-            LEFT JOIN (
-                SELECT *
-                FROM slaveupdata
-                WHERE (SLAVEU_ID, SLAVEU_DATE) IN (
-                    SELECT SLAVEU_ID, MAX(SLAVEU_DATE)
-                    FROM slaveupdata
-                    GROUP BY SLAVEU_ID
-                )
-            ) su ON s.SLAVE_ID = su.SLAVEU_ID
-          LEFT JOIN slavestandardvlog v ON  su.SLAVEU_ID = v.SLAVE_SET_ID
-          WHERE SLAVE_GW_ID = ? AND SLAVE_TYPE_CONTINUE="0"
-          ORDER BY SLAVE_NUMBER 
+        FROM slave s
+          LEFT JOIN (
+              SELECT *
+              FROM slaveupdata
+              WHERE (SLAVEU_ID, SLAVEU_DATE) IN (
+                  SELECT SLAVEU_ID, MAX(SLAVEU_DATE)
+                  FROM slaveupdata
+                  GROUP BY SLAVEU_ID
+              )
+          ) su ON s.SLAVE_ID = su.SLAVEU_ID
+        LEFT JOIN slavestandardvlog v ON  su.SLAVEU_ID = v.SLAVE_SET_ID
+        WHERE SLAVE_GW_ID = ? AND SLAVE_TYPE_CONTINUE="0"
+        ORDER BY SLAVE_NUMBER 
         ;');
         $sth->bindValue(1, $gwid, PDO::PARAM_STR);
         //$sth->bindValue(2, $loginname, PDO::PARAM_STR);
