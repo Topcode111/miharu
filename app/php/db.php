@@ -18,10 +18,12 @@ class dbmgr {
     //$dbpassword2 = getenv('WSDBPass');
     // $dbpassword2 = 'Itec1025';
 
-    // $dbuser2 = 'phpmyadmin';
-    // $dbpassword2 = '47184719Itech@ad';
-    $dbuser2 = 'root';
-    $dbpassword2 = '';
+    // ====================== COMMENTED BY SACREDDEVKING - BEGIN ====================
+    $dbuser2 = 'phpmyadmin';
+    $dbpassword2 = '47184719Itech@ad';
+    // $dbuser2 = 'root';
+    // $dbpassword2 = '';
+    // ====================== COMMENTED BY SACREDDEVKING - END ====================
     
     $dbh = new PDO($dsn2, $dbuser2, $dbpassword2, array(
       PDO::ATTR_EMULATE_PREPARES => false,
