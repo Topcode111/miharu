@@ -119,7 +119,7 @@
 		<div id="hyname">詳細画面</div>
 
 		<div class="btnRight">
-			<button onclick="btn_close()">閉じる</button>
+			<button onclick="btn_close()">閉める</button>
 		</div>
 
 		<br>

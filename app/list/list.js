@@ -64,7 +64,7 @@ function initTable(curTabIdx) {
 				state = "open";
 				statestr = "開";
 				statenow = "開";
-				btnstr = "閉じる";
+				btnstr = "閉める";
 			}
 			if (Uplink[13] == 2) {
 				state = "close";
@@ -85,7 +85,7 @@ function initTable(curTabIdx) {
 				blink = `class="blink"`;
 				if (order[4]==1) {
 					orderstr = "開";
-					btnstr = "閉じる";
+					btnstr = "閉める";
 				} else {
 					orderstr = "閉";
 					btnstr = "開ける";
@@ -230,7 +230,7 @@ function initTable(curTabIdx) {
 // 				state = "open";
 // 				statestr = "開";
 // 				statenow = "開";
-// 				btnstr = "閉じる";
+// 				btnstr = "閉める";
 // 			}
 
 // 			if (Uplink[13] == 2) {
@@ -249,7 +249,7 @@ function initTable(curTabIdx) {
 // 				blink = `class="blink"`;
 // 				if (order[4] == 1) {
 // 					orderstr = "開";
-// 					btnstr = "閉じる";
+// 					btnstr = "閉める";
 // 				} else {
 // 					orderstr = "閉";
 // 					btnstr = "開ける";
@@ -451,7 +451,7 @@ function statebtn(obj) {
 	}
 
 
-	if (obj.innerHTML != "開ける" && obj.innerHTML != "閉じる") {
+	if (obj.innerHTML != "開ける" && obj.innerHTML != "閉める") {
 		return;
 	}
 
@@ -464,7 +464,7 @@ function statebtn(obj) {
 	let state = obj.innerHTML == "開ける";
 	let ctrl = state ? true : false;
 	let now = state ? "開" : "閉";
-	let btn = state ? "閉じる" : "開ける";
+	let btn = state ? "閉める" : "開ける";
 	let ctrl1 = 0;
 
 	if (ctrl) {

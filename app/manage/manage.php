@@ -129,7 +129,7 @@
 					</tr>
 					<tr>
 						<td><select id="state">
-							<option value=1>開く</option><option value=0>閉じる</option>
+							<option value=1>開く</option><option value=0>閉める</option>
 						</select></td>
 						<td><button onclick="all_state()">全機開閉</button></td>
 					</tr>
